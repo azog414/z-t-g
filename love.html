@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Manon je t'aime 💗</title>
+  <style>
+    :root {
+      --matrix-txt: #ff69b4; /* Rose (HotPink) */
+    }
+
+    body {
+      margin: 0;
+      background-color: black;
+      overflow: hidden;
+      font-family: monospace;
+    }
+
+    .love__you {
+      color: var(--matrix-txt);
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      font-family: "Je t'aime manon", serif;
+      z-index: 10;
+      text-align: center;
+      text-shadow: 0 0 10px var(--matrix-txt), 0 0 20px var(--matrix-txt);
+    }
+
+    .matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #style{
+         text-align: center;
+         color: #ff69b4;
+         font-size: xx-large;
+         background-color: aliceblue;
+         position: absolute;
+         display: flex;
+         bottom: 0;
+         left: 0;
+         width: 100%;
+         animation: fadeInOut 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Arrière-plan matrix -->
+  <div class="matrix">
+    <canvas id="matrixCanvas"></canvas>
+  </div> 
+
+  <div id="style">
+    Je te promets que c'est moi qui ai tout écris et appris même si je me suis un peu aider Je t'aime
+  </div>
+
+  <!-- Message centré -->
+  <div class="love__you">
+    Manon je t’aime
+  </div>
+
+  <!-- Script d'animation -->
+  <script>
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Adapter le canvas à la taille de la fenêtre
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Le message qui tombe
+    const message = "Manon je t'aime ";
+    const letters = message.split("");
+
+    const fontSize = 15;
+    const columns = Math.floor(canvas.width / fontSize);
+
+    // Chaque colonne commence à une position verticale (y) initiale
+    const drops = Array(columns).fill(0);
+
+    function draw() {
+      // Crée un effet de traînée
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = getComputedStyle(document.documentElement)
+        .getPropertyValue('--matrix-txt') || '#ff69b4';
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        // Réinitialise aléatoirement
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+  </script>
+</body>
+</html>
